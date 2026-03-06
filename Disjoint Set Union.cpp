@@ -37,6 +37,7 @@ void Union(int u, int v)
 	}
 }
 
+//Checking here there root are same or not
 bool isSameSet(int u, int v)
 {
 	int p = find(u);
@@ -72,4 +73,5 @@ signed main()
 
 
 	return 0;
+
 }
