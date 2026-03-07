@@ -45,7 +45,7 @@ void Union(int u, int v)
 	else
 	{
 		parent[q] = p;
-		rnk[p] += 1;
+		rnk[p] += rnk[q];
 	}
 }
 
@@ -63,3 +63,4 @@ int32_t main()
 
 	return 0;
 }
+
