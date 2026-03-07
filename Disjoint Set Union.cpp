@@ -1,14 +1,4 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <set>
-#include <unordered_map>
-#include <numeric>
-#include <cmath>
-#include <climits>
-#include <map>
-#include <queue>
 #include <cstdint>
 
 using namespace std;
@@ -63,5 +53,6 @@ int32_t main()
 
 	return 0;
 }
+
 
 
