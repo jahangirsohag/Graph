@@ -1,29 +1,30 @@
 #include <iostream>
+#include <string>
 #include <vector>
-#include <queue>
 #include <algorithm>
-
-const long long INF = 4e18;
+#include <set>
+#include <unordered_map>
+#include <numeric>
+#include <cmath>
+#include <climits>
+#include <map>
+#include <queue>
+#include <cstdint>
 
 using namespace std;
 
-int parent[100];
+const int N = 2e5;
 
-void init()
+int parent[N];
+int rnk[N];
+
+int find(int x)
 {
-	for(int i = 1; i <= 8; ++i)
+	if(parent[x] == x)
 	{
-		parent[i] = i;
+		return x;
 	}
-}
-
-bool flag = false;
-
-int find(int u)
-{
-	cout << "Called with " << u << endl;
-	if(u == parent[u]) return u;
-	return parent[u] = find(parent[u]);
+	return parent[x] = find(parent[x]);
 }
 
 void Union(int u, int v)
@@ -31,47 +32,34 @@ void Union(int u, int v)
 	int p = find(u);
 	int q = find(v);
 
-	if(p != q)
+	if(p == q) return;
+
+	if(rnk[p] < rnk[q])
+	{
+		parent[p] = q;
+	}
+	else if(rnk[p] > rnk[q])
 	{
 		parent[q] = p;
 	}
+	else
+	{
+		parent[q] = p;
+		rnk[p] += 1;
+	}
 }
 
-//Checking here there root are same or not
-bool isSameSet(int u, int v)
+int32_t main()
 {
-	int p = find(u);
-	int q = find(v);
+	int n, q;
+	cin >> n >> q;
 
-	return (p == q);
-}
-
-signed main()
-{
-	init();
-
-	Union(1, 2);
-	Union(2, 3);
-	Union(3, 4);
-	Union(4, 5);
-
-	// cout << find(1) << " " << find(5) << endl;
-
-	// if(isSameSet(1, 6)) cout << "true" << endl;
-	// else cout << "false" << endl;
-
-	flag = true;
-
-	cout << find(5) << endl;
-	cout << "--------------" << endl;
-	cout << find(5) << endl;
-	cout << "-------------" << endl;
-
-	cout << find(4) << endl;
-
-	cout << "--------------------" << endl;
+	for(int i = 0; i < n; ++i)
+	{
+		parent[i] = i;
+		rnk[i] = 0;
+	}
 
 
 	return 0;
-
 }
