@@ -1,80 +1,68 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <algorithm>
-
-const long long INF = 4e18;
+#include <set>
+#include <map>
+#include <queue>
+#include <unordered_map>
+#include <cstring>
+#include <cstdint>
+#include <functional>
 
 using namespace std;
 
-signed main()
+int32_t main()
 {
-	int n, e;
-	cin >> n >> e;
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
 
-	vector<vector<pair<int, long long>>> adj(n + 1);
+	int n, m;
+	cin >> n >> m;
 
-	for(int i = 0; i < e; ++i)
+	vector<vector<pair<int,int>>> adj(n + 1);
+
+	for(int i = 0; i < m; ++i)
 	{
-		int u, v, w;
-		cin >> u >> v >> w;
-
-		adj[u].push_back({v, w});
-		adj[v].push_back({u, w});
+		int a, b, c;
+		cin >> a >> b >> c;
+		adj[a].push_back({b, c});
 	}
 
-	priority_queue< pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
 
-	vector<long long> dist(n + 1, INF);
-	vector<int> parent(n + 1, -1);
+	priority_queue< pair<int, int>, vector<pair<int, int>>, greater<pair<int,int>>> pq;
+
+	vector<int> dist(n + 1, 1e9);
+	dist[1] = 0;
+
+	vector<bool> vis(n + 1, false);
 
 	pq.push({0, 1});
 
-	dist[1] = 0;
-
 	while(!pq.empty())
 	{
-		int current = pq.top().second;
-		long long current_dist = pq.top().first;
+		auto [currDist, currNode] = pq.top();
 
 		pq.pop();
 
-		if(current_dist > dist[current]) continue;	//If
+		if(currDist > dist[currNode]) continue;
 
-		for(auto &edge: adj[current])
+		for(auto [neighbor, edgeWeight] : adj[currNode])
 		{
-			int next = edge.first;			//Next node
-			long long weight = edge.second;		//Cost of path to get next node
+			int newDist = currDist + edgeWeight;
 
-			if(current_dist + weight < dist[next])	//if(current_dist + edge.second < dist[next])
+			if(dist[neighbor] > newDist)
 			{
-				dist[next] = current_dist + weight;
-				parent[next] = current;
-				pq.push({dist[next], next});
+				dist[neighbor] = newDist;
+				pq.push({newDist, neighbor});
 			}
 		}
+
+
 	}
 
-	int destination = n;
-
-	if(dist[destination] == 4e18)
+	for(int i = 1; i <= n; ++i)
 	{
-		cout << -1 << endl;
-	}
-	else
-	{
-		vector<int> path;
-		for(int v = destination; v != -1; v = parent[v])
-		{
-			path.push_back(v);
-		}
-		reverse(path.begin(), path.end());
-
-		for(int node : path)
-		{
-			cout << node << " ";
-		}
-		cout << endl;
+		cout << dist[i] << " ";
 	}
 
 	return 0;
